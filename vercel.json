@@ -1,6 +1,6 @@
 {
-  "installCommand": "npm install --include=dev",
-  "buildCommand": "npm run build",
+  "installCommand": "rm -rf node_modules && npm install",
+  "buildCommand": "chmod +x node_modules/.bin/vite && vite build",
   "outputDirectory": "dist",
   "framework": "vite"
 }
