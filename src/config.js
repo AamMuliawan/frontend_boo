@@ -11,11 +11,24 @@ export const CONFIG = {
   // API BACKEND URL
   apiUrl: import.meta.env.VITE_API_URL || "http://localhost:3000",
   
-  // LINKS
+  // =====================================================
+  // LINKS - Edit di sini untuk mengubah semua link
+  // =====================================================
   links: {
-    whatsapp: "https://wa.me/6281234567890",
-    youtube: "https://youtube.com/@channelAnda",
-    spreadsheet: "https://docs.google.com/spreadsheets/d/1yTtWNaK6oy9vCowWdIapPTpgbI5mqPrKfdzrLB8Otyw/edit",
+    // WhatsApp Group
+    whatsapp: "https://chat.whatsapp.com/CzOEHQeIjcBG6NlzUfCiWO?mode=gi_t",
+    
+    // YouTube Channel
+    youtube: "https://www.youtube.com/@Hallooboo",
+    
+    // 🔴 LINK LIVE STREAMING - Ganti setiap mau live
+    // Contoh: "https://www.youtube.com/live/xxxxx" atau "https://www.tiktok.com/@xxx/live"
+    liveStreaming: "https://www.youtube.com/@Hallooboo",
+    
+    // Spreadsheet untuk pembeli cek hasil
+    spreadsheet: "https://docs.google.com/spreadsheets/d/1vfGr14jZmPZjyBD8Z2uzBPBHvUR1eQSPIAn1zlpyUSY/edit?gid=991053640#gid=991053640",
+    
+    // TikTok
     tiktok: "https://tiktok.com/@yourprofile",
   },
   
@@ -24,9 +37,7 @@ export const CONFIG = {
   // =====================================================
   // 📸 GAMBAR IKAN:
   // Letakkan di: public/images/basic/ dan public/images/premium/
-  // ⚠️ JANGAN pakai % di nama file! Rename:
-  //   glaider_50%.png → glaider_50.png
-  //   locness_10%.png → locness_10.png (dst)
+  // ⚠️ JANGAN pakai % di nama file!
   
   categories: [
     {

@@ -195,7 +195,7 @@ const LandingPage = () => {
             <p className="text-sm sm:text-lg text-gray-400 leading-relaxed">{CONFIG.hero.description}</p>
             <div className="flex flex-wrap gap-3">
               <button onClick={() => navigate('/order')} className="px-5 sm:px-7 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-white text-sm sm:text-base hover:scale-105 transition-all hover:shadow-xl hover:shadow-purple-500/25">🎰 Order Sekarang</button>
-              <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="px-5 sm:px-7 py-3 bg-white/5 border border-white/20 rounded-xl font-bold text-white text-sm sm:text-base hover:bg-white/10 transition-all flex items-center gap-2"><span className="text-red-500">▶</span> Lihat Live</a>
+              <a href={CONFIG.links.liveStreaming} target="_blank" rel="noopener noreferrer" className="px-5 sm:px-7 py-3 bg-white/5 border border-white/20 rounded-xl font-bold text-white text-sm sm:text-base hover:bg-white/10 transition-all flex items-center gap-2"><span className="text-red-500">▶</span> Lihat Live</a>
             </div>
             <div className="flex gap-6 pt-3">
               {CONFIG.hero.stats.map((stat, i) => (
