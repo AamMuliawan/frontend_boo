@@ -30,27 +30,80 @@ const Navbar = () => {
   
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-xl border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-xl transform group-hover:scale-110 transition-transform">🎰</div>
-          <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{CONFIG.siteName}</span>
+      <div className="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2 sm:gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-lg sm:text-xl transform group-hover:scale-110 transition-transform">🎰</div>
+          <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{CONFIG.siteName}</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <a href={CONFIG.links.whatsapp} target="_blank" rel="noopener noreferrer" className="hidden md:flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white transition-colors">
             <span>💬</span> WhatsApp
           </a>
-          <button onClick={() => navigate('/order')} className="px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-medium text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all">Order Now</button>
+          <button onClick={() => navigate('/order')} className="px-3 sm:px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-medium text-white text-sm sm:text-base hover:shadow-lg hover:shadow-purple-500/25 transition-all">Order Now</button>
         </div>
       </div>
     </nav>
   );
 };
 
-// Prize Card
-const PrizeCard = ({ prize, size = 'normal' }) => (
-  <div className={`flex-shrink-0 ${size === 'small' ? 'w-20 h-24' : 'w-24 h-32'} bg-gradient-to-br from-white/10 to-white/5 rounded-2xl border border-white/20 flex flex-col items-center justify-center gap-2 transform hover:scale-105 transition-all hover:border-purple-500/50 group`}>
-    <span className="text-3xl group-hover:scale-125 transition-transform">{prize.emoji}</span>
-    <span className="text-xs text-gray-300 text-center px-2">{prize.name}</span>
+// =====================================================
+// PRIZE CARD - Kotak hadiah dengan gambar ikan + persentase
+// =====================================================
+// Untuk daftar hadiah (grid) - menampilkan gambar + nama + persentase
+const PrizeCardFull = ({ prize }) => (
+  <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/20 overflow-hidden hover:border-purple-500/50 transition-all group">
+    <div className="flex items-stretch">
+      {/* Gambar ikan */}
+      <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-black/30 flex items-center justify-center p-2 overflow-hidden">
+        {prize.image ? (
+          <img 
+            src={prize.image} 
+            alt={prize.name} 
+            className="w-full h-full object-contain group-hover:scale-110 transition-transform"
+            onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+          />
+        ) : null}
+        <span className={`text-3xl ${prize.image ? 'hidden' : 'flex'}`} style={{ display: prize.image ? 'none' : 'flex' }}>{prize.emoji}</span>
+      </div>
+      {/* Info */}
+      <div className="flex-1 p-2 sm:p-3 flex flex-col justify-center min-w-0">
+        <p className="text-xs uppercase tracking-wider text-purple-400 mb-0.5">Kemungkinan Dapat</p>
+        <p className="text-xl sm:text-2xl font-bold text-white">{prize.chance || '??%'}</p>
+        <p className="text-xs sm:text-sm text-gray-300 truncate mt-0.5">{prize.name}</p>
+      </div>
+    </div>
+  </div>
+);
+
+// Untuk preview hadiah bergerak (marquee) - hanya gambar
+const PrizeCardPreview = ({ prize }) => (
+  <div className="flex-shrink-0 w-16 h-20 sm:w-20 sm:h-24 bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/20 flex flex-col items-center justify-center gap-1 p-1.5 overflow-hidden">
+    {prize.image ? (
+      <img 
+        src={prize.image} 
+        alt={prize.name} 
+        className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
+        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
+      />
+    ) : null}
+    <span className={`text-2xl ${prize.image ? 'hidden' : 'block'}`} style={{ display: prize.image ? 'none' : 'block' }}>{prize.emoji}</span>
+    <span className="text-[10px] text-gray-400 text-center truncate w-full">{prize.name}</span>
+  </div>
+);
+
+// Prize Card untuk Landing Page (kategori cards)
+const PrizeCardLanding = ({ prize, size = 'normal' }) => (
+  <div className={`flex-shrink-0 ${size === 'small' ? 'w-16 h-20 sm:w-20 sm:h-24' : 'w-20 h-28 sm:w-24 sm:h-32'} bg-gradient-to-br from-white/10 to-white/5 rounded-2xl border border-white/20 flex flex-col items-center justify-center gap-1 p-1.5 transform hover:scale-105 transition-all hover:border-purple-500/50 group overflow-hidden`}>
+    {prize.image ? (
+      <img 
+        src={prize.image} 
+        alt={prize.name} 
+        className="w-10 h-10 sm:w-14 sm:h-14 object-contain group-hover:scale-125 transition-transform"
+        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
+      />
+    ) : null}
+    <span className={`text-2xl sm:text-3xl group-hover:scale-125 transition-transform ${prize.image ? 'hidden' : 'block'}`} style={{ display: prize.image ? 'none' : 'block' }}>{prize.emoji}</span>
+    <span className="text-[10px] sm:text-xs text-gray-300 text-center px-1 truncate w-full">{prize.name}</span>
   </div>
 );
 
@@ -76,21 +129,21 @@ const CategoryCard = ({ category, onOrder }) => {
       {category.featured && (
         <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white z-10">⭐ POPULAR</div>
       )}
-      <div className="p-6">
-        <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
-        <p className="text-gray-400 mb-4">{category.description}</p>
-        <div className="mb-6 -mx-6 px-6">
+      <div className="p-4 sm:p-6">
+        <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">{category.name}</h3>
+        <p className="text-sm sm:text-base text-gray-400 mb-4">{category.description}</p>
+        <div className="mb-6 -mx-4 sm:-mx-6 px-4 sm:px-6">
           <p className="text-xs text-gray-500 mb-3 uppercase tracking-wider">Hadiah yang tersedia:</p>
-          <div ref={scrollRef} className="flex gap-3 overflow-hidden">
-            {[...category.prizes, ...category.prizes].map((prize, i) => (<PrizeCard key={i} prize={prize} />))}
+          <div ref={scrollRef} className="flex gap-2 sm:gap-3 overflow-hidden">
+            {[...category.prizes, ...category.prizes].map((prize, i) => (<PrizeCardLanding key={i} prize={prize} />))}
           </div>
         </div>
         <div className="flex items-center justify-between pt-4 border-t border-white/10">
           <div>
-            <p className="text-sm text-gray-400">Harga per spin</p>
-            <p className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">Rp {category.price.toLocaleString('id-ID')}</p>
+            <p className="text-xs sm:text-sm text-gray-400">Harga per spin</p>
+            <p className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">Rp {category.price.toLocaleString('id-ID')}</p>
           </div>
-          <button onClick={() => onOrder(category)} className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-white transform hover:scale-105 transition-all hover:shadow-lg hover:shadow-purple-500/25 active:scale-95">{CONFIG.text.orderButton}</button>
+          <button onClick={() => onOrder(category)} className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-white text-sm sm:text-base transform hover:scale-105 transition-all hover:shadow-lg hover:shadow-purple-500/25 active:scale-95">{CONFIG.text.orderButton}</button>
         </div>
       </div>
     </div>
@@ -106,28 +159,28 @@ const LandingPage = () => {
   const handleOrder = (category) => navigate(`/order?category=${category.id}`);
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
-      <section className="max-w-6xl mx-auto mb-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/20 rounded-full border border-purple-500/30">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12 px-4">
+      <section className="max-w-6xl mx-auto mb-12 sm:mb-20">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-purple-500/20 rounded-full border border-purple-500/30">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-sm text-purple-300">{CONFIG.hero.badge}</span>
+              <span className="text-xs sm:text-sm text-purple-300">{CONFIG.hero.badge}</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-black text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight">
               {CONFIG.hero.title}
               <span className="block bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">{CONFIG.hero.titleHighlight}</span>
             </h1>
-            <p className="text-xl text-gray-400 leading-relaxed">{CONFIG.hero.description}</p>
-            <div className="flex flex-wrap gap-4">
-              <button onClick={() => navigate('/order')} className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-bold text-white text-lg transform hover:scale-105 transition-all hover:shadow-xl hover:shadow-purple-500/25">🎰 Order Sekarang</button>
-              <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-white/5 border border-white/20 rounded-2xl font-bold text-white text-lg hover:bg-white/10 transition-all flex items-center gap-2"><span className="text-red-500">▶</span> Lihat Live</a>
+            <p className="text-base sm:text-xl text-gray-400 leading-relaxed">{CONFIG.hero.description}</p>
+            <div className="flex flex-wrap gap-3 sm:gap-4">
+              <button onClick={() => navigate('/order')} className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl font-bold text-white text-base sm:text-lg transform hover:scale-105 transition-all hover:shadow-xl hover:shadow-purple-500/25">🎰 Order Sekarang</button>
+              <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="px-6 sm:px-8 py-3 sm:py-4 bg-white/5 border border-white/20 rounded-2xl font-bold text-white text-base sm:text-lg hover:bg-white/10 transition-all flex items-center gap-2"><span className="text-red-500">▶</span> Lihat Live</a>
             </div>
-            <div className="flex gap-8 pt-6">
-              {CONFIG.hero.stats.map((stat, i) => (<div key={i}><p className="text-2xl font-bold text-white">{stat.value}</p><p className="text-sm text-gray-500">{stat.label}</p></div>))}
+            <div className="flex gap-6 sm:gap-8 pt-4 sm:pt-6">
+              {CONFIG.hero.stats.map((stat, i) => (<div key={i}><p className="text-xl sm:text-2xl font-bold text-white">{stat.value}</p><p className="text-xs sm:text-sm text-gray-500">{stat.label}</p></div>))}
             </div>
           </div>
-          <div className="relative">
+          <div className="relative hidden sm:block">
             <div className="aspect-square bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-3xl border border-white/10 flex items-center justify-center relative overflow-hidden">
               <div className="text-center"><div className="text-8xl mb-4 animate-bounce">🎮</div><p className="text-gray-400 text-sm">Gambar Avatar Roblox</p><p className="text-gray-600 text-xs mt-1">Edit: config.js → images.heroAvatar</p></div>
               <div className="absolute -top-4 -right-4 w-20 h-20 bg-purple-500/30 rounded-full blur-xl" />
@@ -138,27 +191,27 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      <section className="max-w-6xl mx-auto mb-20">
-        <div className="text-center mb-12"><h2 className="text-4xl font-bold text-white mb-4">Pilih Kategori Spin</h2><p className="text-gray-400">Semakin tinggi kategori, semakin besar hadiahnya!</p></div>
-        <div className="grid md:grid-cols-2 gap-8">{CONFIG.categories.map((cat) => (<CategoryCard key={cat.id} category={cat} onOrder={handleOrder} />))}</div>
+      <section className="max-w-6xl mx-auto mb-12 sm:mb-20">
+        <div className="text-center mb-8 sm:mb-12"><h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Pilih Kategori Spin</h2><p className="text-sm sm:text-base text-gray-400">Semakin tinggi kategori, semakin besar hadiahnya!</p></div>
+        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">{CONFIG.categories.map((cat) => (<CategoryCard key={cat.id} category={cat} onOrder={handleOrder} />))}</div>
       </section>
       <section className="max-w-4xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-4">
-          <a href={CONFIG.links.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-6 bg-green-500/10 border border-green-500/30 rounded-2xl hover:bg-green-500/20 transition-all group">
-            <div className="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">💬</div>
-            <div><p className="font-bold text-white">Join WhatsApp Group</p><p className="text-sm text-gray-400">Untuk info lebih lanjut</p></div>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <a href={CONFIG.links.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 sm:p-6 bg-green-500/10 border border-green-500/30 rounded-2xl hover:bg-green-500/20 transition-all group">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-500/20 rounded-xl flex items-center justify-center text-xl sm:text-2xl group-hover:scale-110 transition-transform">💬</div>
+            <div><p className="font-bold text-white text-sm sm:text-base">Join WhatsApp Group</p><p className="text-xs sm:text-sm text-gray-400">Untuk info lebih lanjut</p></div>
           </a>
-          <a href={CONFIG.links.spreadsheet} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-6 bg-blue-500/10 border border-blue-500/30 rounded-2xl hover:bg-blue-500/20 transition-all group">
-            <div className="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">📊</div>
-            <div><p className="font-bold text-white">Cek Spreadsheet</p><p className="text-sm text-gray-400">Lihat daftar pemenang</p></div>
+          <a href={CONFIG.links.spreadsheet} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 sm:p-6 bg-blue-500/10 border border-blue-500/30 rounded-2xl hover:bg-blue-500/20 transition-all group">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-500/20 rounded-xl flex items-center justify-center text-xl sm:text-2xl group-hover:scale-110 transition-transform">📊</div>
+            <div><p className="font-bold text-white text-sm sm:text-base">Cek Spreadsheet</p><p className="text-xs sm:text-sm text-gray-400">Lihat daftar pemenang</p></div>
           </a>
         </div>
-        <div className="mt-8">
-          <p className="text-center text-gray-400 mb-4">Bantu Subscribe YouTube juga ya! 🙏</p>
-          <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="block p-8 bg-red-500/10 border border-red-500/30 rounded-2xl hover:bg-red-500/20 transition-all text-center group">
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">📺</div>
-            <p className="font-bold text-white text-xl">Subscribe YouTube Channel</p>
-            <p className="text-gray-400 mt-2">Tonton live streaming spin wheel setiap hari!</p>
+        <div className="mt-6 sm:mt-8">
+          <p className="text-center text-gray-400 text-sm sm:text-base mb-4">Bantu Subscribe YouTube juga ya! 🙏</p>
+          <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="block p-6 sm:p-8 bg-red-500/10 border border-red-500/30 rounded-2xl hover:bg-red-500/20 transition-all text-center group">
+            <div className="text-4xl sm:text-5xl mb-4 group-hover:scale-110 transition-transform">📺</div>
+            <p className="font-bold text-white text-lg sm:text-xl">Subscribe YouTube Channel</p>
+            <p className="text-gray-400 mt-2 text-sm sm:text-base">Tonton live streaming spin wheel setiap hari!</p>
           </a>
         </div>
       </section>
@@ -167,7 +220,7 @@ const LandingPage = () => {
 };
 
 // =====================================================
-// ORDER PAGE
+// ORDER PAGE (RESPONSIVE + FISH IMAGE PRIZES)
 // =====================================================
 
 const OrderPage = () => {
@@ -230,60 +283,84 @@ const OrderPage = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12 px-3 sm:px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8"><h1 className="text-4xl font-bold text-white mb-2">Order Spin Wheel</h1><p className="text-gray-400">Isi form di bawah untuk melanjutkan pemesanan</p></div>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h3 className="text-lg font-bold text-white mb-4">ISI HADIAH</h3>
-              <div className="grid grid-cols-2 gap-2 mb-6">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">Order Spin Wheel</h1>
+          <p className="text-sm sm:text-base text-gray-400">Isi form di bawah untuk melanjutkan pemesanan</p>
+        </div>
+        
+        {/* Layout: stack on mobile, side-by-side on desktop */}
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
+          
+          {/* LEFT: Hadiah Section */}
+          <div className="space-y-4 sm:space-y-6">
+            {/* Pilih Kategori + Daftar Hadiah */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-bold text-white mb-4">ISI HADIAH</h3>
+              
+              {/* Category selector */}
+              <div className="grid grid-cols-2 gap-2 mb-4 sm:mb-6">
                 {CONFIG.categories.map((cat) => (
-                  <button key={cat.id} onClick={() => setSelectedCategory(cat)} className={`p-3 rounded-xl border transition-all ${selectedCategory.id === cat.id ? 'bg-purple-500/20 border-purple-500/50 text-purple-300' : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'}`}>
-                    <p className="font-bold text-sm">{cat.name}</p><p className="text-xs opacity-70">Rp {cat.price.toLocaleString('id-ID')}/spin</p>
+                  <button key={cat.id} onClick={() => setSelectedCategory(cat)} className={`p-2.5 sm:p-3 rounded-xl border transition-all ${selectedCategory.id === cat.id ? 'bg-purple-500/20 border-purple-500/50 text-purple-300' : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'}`}>
+                    <p className="font-bold text-xs sm:text-sm">{cat.name}</p>
+                    <p className="text-[10px] sm:text-xs opacity-70">Rp {cat.price.toLocaleString('id-ID')}/spin</p>
                   </button>
                 ))}
               </div>
-              <div className="grid grid-cols-3 gap-3 mb-4">
-                {selectedCategory.prizes.map((prize, i) => (<div key={i} className="aspect-square bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/20 flex flex-col items-center justify-center gap-1 p-2"><span className="text-2xl">{prize.emoji}</span><span className="text-xs text-gray-300 text-center">{prize.name}</span></div>))}
+              
+              {/* Daftar hadiah - kotak dengan gambar ikan + persentase */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                {selectedCategory.prizes.map((prize, i) => (
+                  <PrizeCardFull key={i} prize={prize} />
+                ))}
               </div>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h3 className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">Preview Hadiah Bergerak</h3>
-              <div ref={scrollRef} className="flex gap-3 overflow-hidden">
-                {[...selectedCategory.prizes, ...selectedCategory.prizes, ...selectedCategory.prizes].map((prize, i) => (<PrizeCard key={i} prize={prize} size="small" />))}
+            
+            {/* Preview Hadiah Bergerak - hanya gambar */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6">
+              <h3 className="text-xs sm:text-sm font-bold text-gray-400 mb-3 sm:mb-4 uppercase tracking-wider">Preview Hadiah Bergerak</h3>
+              <div ref={scrollRef} className="flex gap-2 sm:gap-3 overflow-hidden">
+                {[...selectedCategory.prizes, ...selectedCategory.prizes, ...selectedCategory.prizes].map((prize, i) => (
+                  <PrizeCardPreview key={i} prize={prize} />
+                ))}
               </div>
             </div>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-white mb-6">ISI DATA LENGKAP</h3>
-            <div className="space-y-5">
+          
+          {/* RIGHT: Form */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6">ISI DATA LENGKAP</h3>
+            <div className="space-y-4 sm:space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Username Roblox <span className="text-red-400">*</span></label>
-                <input type="text" value={formData.usernameRoblox} onChange={(e) => setFormData({ ...formData, usernameRoblox: e.target.value })} placeholder="Masukkan username Roblox" className={`w-full px-4 py-3 bg-white/5 border ${errors.usernameRoblox ? 'border-red-500' : 'border-white/20'} rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} />
-                {errors.usernameRoblox && <p className="text-red-400 text-sm mt-1">{errors.usernameRoblox}</p>}
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">Username Roblox <span className="text-red-400">*</span></label>
+                <input type="text" value={formData.usernameRoblox} onChange={(e) => setFormData({ ...formData, usernameRoblox: e.target.value })} placeholder="Masukkan username Roblox" className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border ${errors.usernameRoblox ? 'border-red-500' : 'border-white/20'} rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} />
+                {errors.usernameRoblox && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.usernameRoblox}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Username TikTok <span className="text-red-400">*</span></label>
-                <input type="text" value={formData.usernameTiktok} onChange={(e) => setFormData({ ...formData, usernameTiktok: e.target.value })} placeholder="Masukkan username TikTok" className={`w-full px-4 py-3 bg-white/5 border ${errors.usernameTiktok ? 'border-red-500' : 'border-white/20'} rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} />
-                {errors.usernameTiktok && <p className="text-red-400 text-sm mt-1">{errors.usernameTiktok}</p>}
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">Username TikTok <span className="text-red-400">*</span></label>
+                <input type="text" value={formData.usernameTiktok} onChange={(e) => setFormData({ ...formData, usernameTiktok: e.target.value })} placeholder="Masukkan username TikTok" className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border ${errors.usernameTiktok ? 'border-red-500' : 'border-white/20'} rounded-xl text-white text-sm sm:text-base placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} />
+                {errors.usernameTiktok && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.usernameTiktok}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Total Spin <span className="text-red-400">*</span></label>
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">Total Spin <span className="text-red-400">*</span></label>
                 <div className="flex items-center gap-3">
-                  <button onClick={() => setFormData({ ...formData, totalSpin: Math.max(1, formData.totalSpin - 1) })} className="w-12 h-12 bg-white/10 border border-white/20 rounded-xl text-white font-bold hover:bg-white/20 transition-colors">-</button>
-                  <input type="number" value={formData.totalSpin} onChange={(e) => setFormData({ ...formData, totalSpin: Math.max(1, Math.min(100, parseInt(e.target.value) || 1)) })} min="1" max="100" className={`flex-1 px-4 py-3 bg-white/5 border ${errors.totalSpin ? 'border-red-500' : 'border-white/20'} rounded-xl text-white text-center text-xl font-bold focus:outline-none focus:border-purple-500 transition-colors`} />
-                  <button onClick={() => setFormData({ ...formData, totalSpin: Math.min(100, formData.totalSpin + 1) })} className="w-12 h-12 bg-white/10 border border-white/20 rounded-xl text-white font-bold hover:bg-white/20 transition-colors">+</button>
+                  <button onClick={() => setFormData({ ...formData, totalSpin: Math.max(1, formData.totalSpin - 1) })} className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 border border-white/20 rounded-xl text-white font-bold hover:bg-white/20 transition-colors">-</button>
+                  <input type="number" value={formData.totalSpin} onChange={(e) => setFormData({ ...formData, totalSpin: Math.max(1, Math.min(100, parseInt(e.target.value) || 1)) })} min="1" max="100" className={`flex-1 px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border ${errors.totalSpin ? 'border-red-500' : 'border-white/20'} rounded-xl text-white text-center text-lg sm:text-xl font-bold focus:outline-none focus:border-purple-500 transition-colors`} />
+                  <button onClick={() => setFormData({ ...formData, totalSpin: Math.min(100, formData.totalSpin + 1) })} className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 border border-white/20 rounded-xl text-white font-bold hover:bg-white/20 transition-colors">+</button>
                 </div>
-                {errors.totalSpin && <p className="text-red-400 text-sm mt-1">{errors.totalSpin}</p>}
+                {errors.totalSpin && <p className="text-red-400 text-xs sm:text-sm mt-1">{errors.totalSpin}</p>}
               </div>
-              <div className="pt-4 border-t border-white/10">
-                <div className="flex justify-between items-center mb-2"><span className="text-gray-400">Kategori</span><span className="text-white font-medium">{selectedCategory.name}</span></div>
-                <div className="flex justify-between items-center mb-2"><span className="text-gray-400">Harga per spin</span><span className="text-white">Rp {selectedCategory.price.toLocaleString('id-ID')}</span></div>
-                <div className="flex justify-between items-center mb-4"><span className="text-gray-400">Jumlah spin</span><span className="text-white">{formData.totalSpin}x</span></div>
-                <div className="flex justify-between items-center pt-4 border-t border-white/10"><span className="text-lg font-bold text-white">TOTAL TAGIHAN</span><span className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">Rp {totalPrice.toLocaleString('id-ID')}</span></div>
+              <div className="pt-3 sm:pt-4 border-t border-white/10">
+                <div className="flex justify-between items-center mb-2"><span className="text-sm text-gray-400">Kategori</span><span className="text-sm text-white font-medium">{selectedCategory.name}</span></div>
+                <div className="flex justify-between items-center mb-2"><span className="text-sm text-gray-400">Harga per spin</span><span className="text-sm text-white">Rp {selectedCategory.price.toLocaleString('id-ID')}</span></div>
+                <div className="flex justify-between items-center mb-4"><span className="text-sm text-gray-400">Jumlah spin</span><span className="text-sm text-white">{formData.totalSpin}x</span></div>
+                <div className="flex justify-between items-center pt-3 sm:pt-4 border-t border-white/10">
+                  <span className="text-base sm:text-lg font-bold text-white">TOTAL TAGIHAN</span>
+                  <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">Rp {totalPrice.toLocaleString('id-ID')}</span>
+                </div>
               </div>
-              <button onClick={handleSubmit} disabled={isLoading} className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-white text-lg transform hover:scale-[1.02] transition-all hover:shadow-xl hover:shadow-purple-500/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">{isLoading ? '⏳ Memproses...' : '🚀 GASKAN ORDER'}</button>
+              <button onClick={handleSubmit} disabled={isLoading} className="w-full py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-white text-base sm:text-lg transform hover:scale-[1.02] transition-all hover:shadow-xl hover:shadow-purple-500/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">{isLoading ? '⏳ Memproses...' : '🚀 GASKAN ORDER'}</button>
             </div>
           </div>
         </div>
@@ -303,15 +380,13 @@ const PaymentPage = () => {
   const [orderData, setOrderData] = useState(null);
   const [timeLeft, setTimeLeft] = useState(15 * 60);
   const [paymentStatus, setPaymentStatus] = useState('pending');
-  const [confirmSent, setConfirmSent] = useState(false); // Track apakah confirm sudah dikirim
+  const [confirmSent, setConfirmSent] = useState(false);
 
-  // Load order data dari sessionStorage
   useEffect(() => {
     const stored = sessionStorage.getItem('currentOrder');
     if (stored) setOrderData(JSON.parse(stored));
   }, []);
 
-  // Countdown timer
   useEffect(() => {
     if (timeLeft <= 0) {
       setPaymentStatus('expired');
@@ -321,9 +396,6 @@ const PaymentPage = () => {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // =====================================================
-  // POLLING STATUS + AUTO CONFIRM PAYMENT
-  // =====================================================
   useEffect(() => {
     if (!orderId || paymentStatus !== 'pending') return;
 
@@ -338,10 +410,6 @@ const PaymentPage = () => {
           if (status === 'settlement' || status === 'capture') {
             setPaymentStatus('success');
 
-            // =====================================================
-            // KUNCI: Kirim confirm payment ke backend
-            // Backend akan update Google Sheets → pindahkan ke Paid_Orders
-            // =====================================================
             if (!confirmSent) {
               setConfirmSent(true);
               try {
@@ -364,9 +432,7 @@ const PaymentPage = () => {
       }
     };
 
-    // Poll setiap 5 detik
     const interval = setInterval(checkStatus, 5000);
-    // Juga cek langsung saat mount
     checkStatus();
 
     return () => clearInterval(interval);
@@ -376,7 +442,7 @@ const PaymentPage = () => {
     `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
 
   if (!orderData) return (
-    <div className="min-h-screen pt-24 pb-12 px-4 flex items-center justify-center">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12 px-4 flex items-center justify-center">
       <div className="text-center">
         <p className="text-gray-400 mb-4">Tidak ada data pesanan</p>
         <button onClick={() => navigate('/order')} className="px-6 py-3 bg-purple-500/20 border border-purple-500/50 rounded-xl text-purple-300 hover:bg-purple-500/30 transition-all">← Kembali ke Order</button>
@@ -385,13 +451,13 @@ const PaymentPage = () => {
   );
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12 px-3 sm:px-4">
       <div className="max-w-lg mx-auto">
         {/* Step indicator */}
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <div className="flex items-center justify-center gap-2 mb-6 sm:mb-8">
           {[1, 2, 3].map((step, i) => (
             <React.Fragment key={step}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-sm sm:text-base ${
                 paymentStatus === 'success' 
                   ? 'bg-green-500 text-white' 
                   : step <= 2 
@@ -400,36 +466,36 @@ const PaymentPage = () => {
               }`}>
                 {paymentStatus === 'success' || step < 3 ? '✓' : '3'}
               </div>
-              {i < 2 && <div className={`w-16 h-1 ${
+              {i < 2 && <div className={`w-10 sm:w-16 h-1 ${
                 paymentStatus === 'success' ? 'bg-green-500' : step < 3 ? 'bg-purple-500' : 'bg-white/10'
               }`} />}
             </React.Fragment>
           ))}
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
+        <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl overflow-hidden">
           {/* Header */}
-          <div className={`p-6 text-center border-b border-white/10 ${
+          <div className={`p-4 sm:p-6 text-center border-b border-white/10 ${
             paymentStatus === 'success' 
               ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20' 
               : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20'
           }`}>
-            <h1 className="text-2xl font-bold text-white">PEMBAYARAN</h1>
-            <p className="text-gray-400 mt-1">Order ID: {orderData.order_id}</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">PEMBAYARAN</h1>
+            <p className="text-gray-400 mt-1 text-xs sm:text-sm break-all">Order ID: {orderData.order_id}</p>
           </div>
 
           {/* PENDING STATE */}
           {paymentStatus === 'pending' && (
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
               <div className="text-center">
-                <p className="text-gray-400 mb-2">TOTAL TAGIHAN</p>
-                <p className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                <p className="text-gray-400 mb-2 text-sm">TOTAL TAGIHAN</p>
+                <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                   Rp {orderData.total_price?.toLocaleString('id-ID')}
                 </p>
               </div>
 
               {/* QRIS Image */}
-              <div className="bg-white rounded-2xl p-4 aspect-square flex items-center justify-center">
+              <div className="bg-white rounded-2xl p-3 sm:p-4 aspect-square max-w-xs mx-auto flex items-center justify-center">
                 {orderData.qris_url ? (
                   <img src={orderData.qris_url} alt="QRIS" className="max-w-full max-h-full" />
                 ) : (
@@ -443,18 +509,18 @@ const PaymentPage = () => {
 
               {/* Timer */}
               <div className="text-center">
-                <p className="text-gray-400 text-sm mb-2">WAKTU KADALUARSA</p>
-                <div className={`text-4xl font-mono font-bold ${timeLeft < 60 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
+                <p className="text-gray-400 text-xs sm:text-sm mb-2">WAKTU KADALUARSA</p>
+                <div className={`text-3xl sm:text-4xl font-mono font-bold ${timeLeft < 60 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
                   {formatTime(timeLeft)}
                 </div>
-                <p className="text-gray-500 text-sm mt-2">Selesaikan pembayaran sebelum waktu habis</p>
+                <p className="text-gray-500 text-xs sm:text-sm mt-2">Selesaikan pembayaran sebelum waktu habis</p>
               </div>
 
               {/* QRIS Actions */}
               {orderData.qris_url && (
                 <div className="space-y-3">
                   <div className="flex gap-2">
-                    <a href={orderData.qris_url} download={`QRIS-${orderData.order_id}.png`} className="flex-1 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-center font-medium hover:bg-white/20 transition-all">
+                    <a href={orderData.qris_url} download={`QRIS-${orderData.order_id}.png`} className="flex-1 py-2.5 sm:py-3 bg-white/10 border border-white/20 rounded-xl text-white text-center text-sm font-medium hover:bg-white/20 transition-all">
                       📥 Download QR
                     </a>
                     <button 
@@ -462,7 +528,7 @@ const PaymentPage = () => {
                         navigator.clipboard.writeText(orderData.qris_url);
                         alert('URL QRIS berhasil dicopy!');
                       }} 
-                      className="flex-1 py-3 bg-purple-500/20 border border-purple-500/50 rounded-xl text-purple-300 text-center font-medium hover:bg-purple-500/30 transition-all"
+                      className="flex-1 py-2.5 sm:py-3 bg-purple-500/20 border border-purple-500/50 rounded-xl text-purple-300 text-center text-sm font-medium hover:bg-purple-500/30 transition-all"
                     >
                       📋 Copy URL
                     </button>
@@ -470,13 +536,13 @@ const PaymentPage = () => {
 
                   {/* Simulator Link */}
                   <div className="bg-slate-800/50 border border-white/10 rounded-xl p-3">
-                    <p className="text-xs text-gray-400 mb-2">🔗 QRIS Image URL (untuk Simulator Midtrans):</p>
+                    <p className="text-xs text-gray-400 mb-2">🔗 QRIS Image URL:</p>
                     <div className="flex items-center gap-2">
                       <input 
                         type="text" 
                         value={orderData.qris_url} 
                         readOnly 
-                        className="flex-1 bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-xs text-gray-300 font-mono truncate"
+                        className="flex-1 bg-black/30 border border-white/10 rounded-lg px-2 sm:px-3 py-2 text-[10px] sm:text-xs text-gray-300 font-mono truncate"
                         onClick={(e) => e.target.select()}
                       />
                       <button 
@@ -484,12 +550,12 @@ const PaymentPage = () => {
                           navigator.clipboard.writeText(orderData.qris_url);
                           alert('URL berhasil dicopy!');
                         }}
-                        className="px-3 py-2 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-xs hover:bg-green-500/30 transition-all whitespace-nowrap"
+                        className="px-2 sm:px-3 py-2 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-xs hover:bg-green-500/30 transition-all whitespace-nowrap"
                       >
                         Copy
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
                       💡 Paste URL ini ke{' '}
                       <a href="https://simulator.sandbox.midtrans.com/qris/index" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
                         Midtrans Simulator
@@ -504,45 +570,45 @@ const PaymentPage = () => {
 
           {/* SUCCESS STATE */}
           {paymentStatus === 'success' && (
-            <div className="p-8 text-center">
-              <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">✓</span>
+            <div className="p-6 sm:p-8 text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl sm:text-4xl">✓</span>
               </div>
-              <h2 className="text-2xl font-bold text-green-400 mb-2">Pembayaran Berhasil!</h2>
-              <p className="text-gray-400 mb-6">Pesanan Anda sedang diproses. Admin akan segera menjalankan spin untuk Anda.</p>
-              <div className="bg-white/5 rounded-xl p-4 text-left space-y-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-green-400 mb-2">Pembayaran Berhasil!</h2>
+              <p className="text-sm sm:text-base text-gray-400 mb-6">Pesanan Anda sedang diproses. Admin akan segera menjalankan spin untuk Anda.</p>
+              <div className="bg-white/5 rounded-xl p-4 text-left space-y-2 text-sm">
                 <p className="text-gray-400">Username Roblox: <span className="text-white font-bold">{orderData.order?.usn_roblox}</span></p>
                 <p className="text-gray-400">Username TikTok: <span className="text-white font-bold">{orderData.order?.usn_tiktok}</span></p>
                 <p className="text-gray-400">Total Spin: <span className="text-white font-bold">{orderData.order?.total_spin}x</span></p>
                 <p className="text-gray-400">Kategori: <span className="text-white font-bold">{orderData.order?.kategori}</span></p>
               </div>
               <div className="mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl">
-                <p className="text-green-400 text-sm">✅ Data pembayaran sudah masuk ke sistem admin. Silakan tunggu giliran spin Anda!</p>
+                <p className="text-green-400 text-xs sm:text-sm">✅ Data pembayaran sudah masuk ke sistem admin. Silakan tunggu giliran spin Anda!</p>
               </div>
             </div>
           )}
 
           {/* EXPIRED STATE */}
           {paymentStatus === 'expired' && (
-            <div className="p-8 text-center">
-              <div className="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">⏰</span>
+            <div className="p-6 sm:p-8 text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl sm:text-4xl">⏰</span>
               </div>
-              <h2 className="text-2xl font-bold text-red-400 mb-2">Waktu Habis!</h2>
-              <p className="text-gray-400 mb-6">Pembayaran telah kadaluarsa.</p>
-              <button onClick={() => navigate('/order')} className="px-8 py-3 bg-purple-500/20 border border-purple-500/50 rounded-xl text-purple-300 hover:bg-purple-500/30 transition-all">
+              <h2 className="text-xl sm:text-2xl font-bold text-red-400 mb-2">Waktu Habis!</h2>
+              <p className="text-sm sm:text-base text-gray-400 mb-6">Pembayaran telah kadaluarsa.</p>
+              <button onClick={() => navigate('/order')} className="px-6 sm:px-8 py-3 bg-purple-500/20 border border-purple-500/50 rounded-xl text-purple-300 hover:bg-purple-500/30 transition-all text-sm sm:text-base">
                 ← Buat Pesanan Baru
               </button>
             </div>
           )}
 
           {/* Footer Links */}
-          <div className="p-4 border-t border-white/10 space-y-3">
-            <a href={CONFIG.links.spreadsheet} target="_blank" rel="noopener noreferrer" className="block w-full py-3 bg-blue-500/10 border border-blue-500/30 rounded-xl text-blue-400 text-center font-medium hover:bg-blue-500/20 transition-all">
-              📊 Link ke Spreadsheet untuk Mengecek Dapat Apa
+          <div className="p-3 sm:p-4 border-t border-white/10 space-y-2 sm:space-y-3">
+            <a href={CONFIG.links.spreadsheet} target="_blank" rel="noopener noreferrer" className="block w-full py-2.5 sm:py-3 bg-blue-500/10 border border-blue-500/30 rounded-xl text-blue-400 text-center text-sm font-medium hover:bg-blue-500/20 transition-all">
+              📊 Cek Spreadsheet - Dapat Apa
             </a>
-            <a href={CONFIG.links.whatsapp} target="_blank" rel="noopener noreferrer" className="block w-full py-3 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-center font-medium hover:bg-green-500/20 transition-all">
-              💬 Link ke WhatsApp Grup
+            <a href={CONFIG.links.whatsapp} target="_blank" rel="noopener noreferrer" className="block w-full py-2.5 sm:py-3 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-center text-sm font-medium hover:bg-green-500/20 transition-all">
+              💬 WhatsApp Grup
             </a>
           </div>
         </div>

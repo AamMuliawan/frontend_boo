@@ -36,39 +36,45 @@ export const CONFIG = {
   // ⚠️ PENTING: wheelId harus sesuai dengan ID di aplikasi spin wheel Anda
   // Kategori 1 (Basic)   → wheelId = 6 → URL: http://localhost:5730/wheel?id=6&userName=xxx
   // Kategori 2 (Premium) → wheelId = 5 → URL: http://localhost:5730/wheel?id=5&userName=xxx
+  //
+  // 📸 GAMBAR IKAN:
+  // Letakkan gambar ikan di folder: frontend/images/basic/ dan frontend/images/premium/
+  // Format nama file: nama_persentase.png (contoh: glaider_50%.png, ruby_4%.png)
+  // Pada field "image" di bawah, masukkan path relatif: /images/basic/nama_persentase.png
   
   categories: [
     {
       id: 1,
       name: "Spin Wheel Basic",
-      price: 5000, // Harga per spin dalam Rupiah
+      price: 5000,
       description: "Hadiah menarik untuk pemula!",
-      wheelId: 6, // ⚠️ ID webhook = 6 untuk kategori Basic
+      wheelId: 6,
       color: "from-blue-500 to-cyan-500",
       prizes: [
-        { name: "10 Robux", emoji: "🎮" },
-        { name: "25 Robux", emoji: "💎" },
-        { name: "50 Robux", emoji: "⭐" },
-        { name: "Zonk", emoji: "💨" },
-        { name: "Spin Ulang", emoji: "🔄" },
-        { name: "100 Robux", emoji: "👑" },
+        { name: "Glaider", emoji: "🎮", chance: "50%", image: "/images/basic/glaider_50%.png" },
+        { name: "Locness", emoji: "💎", chance: "10%", image: "/images/basic/locness_10%.png" },
+        { name: "Kraken", emoji: "⭐", chance: "25%", image: "/images/basic/kraken_25%.png" },
+        { name: "Frosborn Maxton", emoji: "💨", chance: "1%", image: "/images/basic/Frosborn_Maxton_1%.png" },
+        { name: "Ruby", emoji: "🔄", chance: "4%", image: "/images/basic/ruby_4%.png" },
+        { name: "Maja", emoji: "👑", chance: "20%", image: "/images/basic/maja_20%.png" },
       ]
     },
     {
       id: 2,
       name: "Spin Wheel Premium",
-      price: 15000, // Harga per spin dalam Rupiah
+      price: 15000,
       description: "Hadiah lebih besar, kesempatan lebih tinggi!",
-      wheelId: 5, // ⚠️ ID webhook = 5 untuk kategori Premium
+      wheelId: 5,
       color: "from-purple-500 to-pink-500",
       featured: true,
       prizes: [
-        { name: "100 Robux", emoji: "💎" },
-        { name: "250 Robux", emoji: "⭐" },
-        { name: "500 Robux", emoji: "👑" },
-        { name: "50 Robux", emoji: "🎮" },
-        { name: "Spin Ulang", emoji: "🔄" },
-        { name: "1000 Robux", emoji: "🏆" },
+        { name: "Magma", emoji: "💎", chance: "10%", image: "/images/premium/magma_10%.png" },
+        { name: "Maja Pirate", emoji: "⭐", chance: "15%", image: "/images/premium/maja_pirate_15%.png" },
+        { name: "Maja Fairy Dust", emoji: "👑", chance: "1%", image: "/images/premium/maja_fairy_dust_1%.png" },
+        { name: "Leviathan", emoji: "🎮", chance: "10%", image: "/images/premium/leviathan_10%.png" },
+        { name: "Depthseeker", emoji: "🔄", chance: "39%", image: "/images/premium/depthseeker_39%.png" },
+        { name: "Cursed", emoji: "🏆", chance: "10%", image: "/images/premium/cursed_10%.png" },
+        { name: "Mega Pirate", emoji: "🏆", chance: "15%", image: "/images/premium/mega_pirate.png" },
       ]
     }
   ],
@@ -91,24 +97,10 @@ export const CONFIG = {
   // =====================================================
   // GAMBAR & ASSETS
   // =====================================================
-  // Ganti dengan path gambar Anda
-  // Letakkan gambar di folder /public
   images: {
-    // Hero avatar - ganti dengan gambar avatar Roblox Anda
-    // Letakkan file di: /public/images/avatar.png
     heroAvatar: "/images/avatar.png",
-    
-    // Logo website (opsional)
-    // Letakkan file di: /public/images/logo.png
     logo: "/images/logo.png",
-    
-    // Gambar hadiah untuk setiap kategori (opsional)
-    // Jika tidak ada, akan menggunakan emoji dari prizes
-    // Format: categoryId -> array of image paths
-    prizeImages: {
-      // 1: ["/images/prizes/robux-10.png", "/images/prizes/robux-25.png", ...],
-      // 2: ["/images/prizes/robux-100.png", "/images/prizes/robux-250.png", ...],
-    }
+    prizeImages: {}
   },
   
   // =====================================================
@@ -118,15 +110,11 @@ export const CONFIG = {
     orderButton: "ORDER →",
     submitButton: "🚀 GASKAN ORDER",
     downloadQr: "📥 DOWNLOAD QR",
-    
-    // Form labels
     formLabels: {
       usernameRoblox: "Username Roblox",
       usernameTiktok: "Username TikTok", 
       totalSpin: "Total Spin"
     },
-    
-    // Placeholder
     placeholders: {
       usernameRoblox: "Masukkan username Roblox",
       usernameTiktok: "Masukkan username TikTok"
@@ -137,7 +125,7 @@ export const CONFIG = {
   // PAYMENT SETTINGS
   // =====================================================
   payment: {
-    expiryMinutes: 15, // Waktu kadaluarsa pembayaran (menit)
+    expiryMinutes: 15,
     minSpin: 1,
     maxSpin: 100,
   }
