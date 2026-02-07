@@ -51,12 +51,12 @@ export const CONFIG = {
       wheelId: 6,
       color: "from-blue-500 to-cyan-500",
       prizes: [
-        { name: "Glaider", emoji: "🎮", chance: "50%", image: "/images/basic/glaider_50%.png" },
-        { name: "Locness", emoji: "💎", chance: "10%", image: "/images/basic/locness_10%.png" },
-        { name: "Kraken", emoji: "⭐", chance: "25%", image: "/images/basic/kraken_25%.png" },
-        { name: "Frosborn Maxton", emoji: "💨", chance: "1%", image: "/images/basic/Frosborn_Maxton_1%.png" },
-        { name: "Ruby", emoji: "🔄", chance: "4%", image: "/images/basic/ruby_4%.png" },
-        { name: "Maja", emoji: "👑", chance: "20%", image: "/images/basic/maja_20%.png" },
+        { name: "Glaider", chance: "50%", image: "/images/basic/glaider_50%.png" },
+        { name: "Locness", chance: "10%", image: "/images/basic/locness_10%.png" },
+        { name: "Kraken", chance: "25%", image: "/images/basic/kraken_25%.png" },
+        { name: "Frosborn Maxton", chance: "1%", image: "/images/basic/Frosborn_Maxton_1%.png" },
+        { name: "Ruby", chance: "4%", image: "/images/basic/ruby_4%.png" },
+        { name: "Maja", chance: "20%", image: "/images/basic/maja_20%.png" },
       ]
     },
     {
@@ -68,13 +68,13 @@ export const CONFIG = {
       color: "from-purple-500 to-pink-500",
       featured: true,
       prizes: [
-        { name: "Magma", emoji: "💎", chance: "10%", image: "/images/premium/magma_10%.png" },
-        { name: "Maja Pirate", emoji: "⭐", chance: "15%", image: "/images/premium/maja_pirate_15%.png" },
-        { name: "Maja Fairy Dust", emoji: "👑", chance: "1%", image: "/images/premium/maja_fairy_dust_1%.png" },
-        { name: "Leviathan", emoji: "🎮", chance: "10%", image: "/images/premium/leviathan_10%.png" },
-        { name: "Depthseeker", emoji: "🔄", chance: "39%", image: "/images/premium/depthseeker_39%.png" },
-        { name: "Cursed", emoji: "🏆", chance: "10%", image: "/images/premium/cursed_10%.png" },
-        { name: "Mega Pirate", emoji: "🏆", chance: "15%", image: "/images/premium/mega_pirate.png" },
+        { name: "Magma", chance: "10%", image: "/images/premium/magma_10%.png" },
+        { name: "Maja Pirate", chance: "15%", image: "/images/premium/maja_pirate_15%.png" },
+        { name: "Maja Fairy Dust", chance: "1%", image: "/images/premium/maja_fairy_dust_1%.png" },
+        { name: "Leviathan", chance: "10%", image: "/images/premium/leviathan_10%.png" },
+        { name: "Depthseeker", chance: "39%", image: "/images/premium/depthseeker_39%.png" },
+        { name: "Cursed", chance: "10%", image: "/images/premium/cursed_10%.png" },
+        { name: "Mega Pirate", chance: "15%", image: "/images/premium/mega_pirate.png" },
       ]
     }
   ],
