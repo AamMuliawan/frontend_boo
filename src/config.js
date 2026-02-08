@@ -22,23 +22,21 @@ export const CONFIG = {
     youtube: "https://www.youtube.com/@Hallooboo",
     
     // 🔴 LINK LIVE STREAMING - Ganti setiap mau live
-    // Contoh: "https://www.youtube.com/live/xxxxx" atau "https://www.tiktok.com/@xxx/live"
-    liveStreaming: "https://www.youtube.com/@Hallooboo",
+    liveStreaming: "https://www.tiktok.com/@hallooboo?_r=1&_t=ZS-93kawySbTnU",
     
     // Spreadsheet untuk pembeli cek hasil
     spreadsheet: "https://docs.google.com/spreadsheets/d/1vfGr14jZmPZjyBD8Z2uzBPBHvUR1eQSPIAn1zlpyUSY/edit?gid=991053640#gid=991053640",
     
     // TikTok
-    tiktok: "https://tiktok.com/@yourprofile",
+    tiktok: "https://www.tiktok.com/@hallooboo?_r=1&_t=ZS-93kawySbTnU",
+    
+    // 🐟 Private Server Fisch - Link setelah pembayaran berhasil
+    privateServer: "https://www.roblox.com/share?code=1a4a585d597f3b48ab9f78b2e696e63b&type=Server",
   },
   
   // =====================================================
   // KATEGORI SPIN WHEEL
   // =====================================================
-  // 📸 GAMBAR IKAN:
-  // Letakkan di: public/images/basic/ dan public/images/premium/
-  // ⚠️ JANGAN pakai % di nama file!
-  
   categories: [
     {
       id: 1,
@@ -98,13 +96,13 @@ export const CONFIG = {
     submitButton: "🚀 GASKAN ORDER",
     downloadQr: "📥 DOWNLOAD QR",
     formLabels: {
+      usernameTiktok: "Username TikTok",
       usernameRoblox: "Username Roblox",
-      usernameTiktok: "Username TikTok", 
       totalSpin: "Total Spin"
     },
     placeholders: {
-      usernameRoblox: "Masukkan username Roblox",
-      usernameTiktok: "Masukkan username TikTok"
+      usernameTiktok: "Masukkan username TikTok",
+      usernameRoblox: "Masukkan username Roblox"
     }
   },
   

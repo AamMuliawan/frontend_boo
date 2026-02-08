@@ -82,7 +82,6 @@ function useAutoScroll(deps = []) {
 // PRIZE COMPONENTS
 // =====================================================
 
-// Gambar ikan dengan fallback
 const FishImage = ({ src, alt, className = "" }) => {
   const [error, setError] = useState(false);
 
@@ -102,7 +101,6 @@ const FishImage = ({ src, alt, className = "" }) => {
   );
 };
 
-// Kotak hadiah FULL - gambar + nama + persentase (untuk daftar di order page)
 const PrizeCardFull = ({ prize }) => (
   <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/20 overflow-hidden hover:border-purple-500/50 transition-all">
     <div className="flex items-center gap-3 p-2.5">
@@ -118,7 +116,6 @@ const PrizeCardFull = ({ prize }) => (
   </div>
 );
 
-// Kotak hadiah kecil - untuk preview bergerak (hanya gambar + nama)
 const PrizeCardSmall = ({ prize }) => (
   <div className="flex-shrink-0 w-16 h-20 bg-gradient-to-br from-white/10 to-white/5 rounded-lg border border-white/20 flex flex-col items-center justify-center gap-1 p-1 overflow-hidden">
     <div className="w-10 h-10 flex items-center justify-center">
@@ -128,7 +125,6 @@ const PrizeCardSmall = ({ prize }) => (
   </div>
 );
 
-// Kotak hadiah untuk Landing Page (scrolling marquee)
 const PrizeCardLanding = ({ prize }) => (
   <div className="flex-shrink-0 w-20 h-24 bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/20 flex flex-col items-center justify-center gap-1 p-1.5 hover:scale-105 transition-all hover:border-purple-500/50 overflow-hidden">
     <div className="w-12 h-12 flex items-center justify-center">
@@ -138,7 +134,6 @@ const PrizeCardLanding = ({ prize }) => (
   </div>
 );
 
-// Category Card (Landing Page)
 const CategoryCard = ({ category, onOrder }) => {
   const scrollRef = useAutoScroll([]);
 
@@ -206,7 +201,6 @@ const LandingPage = () => {
               ))}
             </div>
           </div>
-          {/* Avatar - hidden on small mobile */}
           <div className="relative hidden md:block">
             <div className="aspect-square bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-3xl border border-white/10 flex items-center justify-center relative overflow-hidden">
               <div className="text-center"><div className="text-7xl mb-4 animate-bounce">🎮</div><p className="text-gray-400 text-sm">Gambar Avatar Roblox</p></div>
@@ -244,11 +238,14 @@ const LandingPage = () => {
             <div className="min-w-0"><p className="font-bold text-white text-xs sm:text-sm truncate">Cek Spreadsheet</p><p className="text-[10px] sm:text-xs text-gray-400 truncate">Daftar pemenang</p></div>
           </a>
         </div>
-        <div className="mt-4">
-          <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="block p-5 sm:p-6 bg-red-500/10 border border-red-500/30 rounded-xl hover:bg-red-500/20 transition-all text-center">
-            <div className="text-3xl sm:text-4xl mb-2">📺</div>
-            <p className="font-bold text-white text-sm sm:text-lg">Subscribe YouTube Channel</p>
-            <p className="text-gray-400 mt-1 text-xs sm:text-sm">Tonton live streaming spin wheel setiap hari!</p>
+        <div className="grid grid-cols-2 gap-3 mt-3">
+          <a href={CONFIG.links.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 sm:gap-3 p-3 sm:p-5 bg-red-500/10 border border-red-500/30 rounded-xl hover:bg-red-500/20 transition-all">
+            <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center text-lg flex-shrink-0">📺</div>
+            <div className="min-w-0"><p className="font-bold text-white text-xs sm:text-sm truncate">YouTube Channel</p><p className="text-[10px] sm:text-xs text-gray-400 truncate">Subscribe & nonton live!</p></div>
+          </a>
+          <a href={CONFIG.links.tiktok} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 sm:gap-3 p-3 sm:p-5 bg-pink-500/10 border border-pink-500/30 rounded-xl hover:bg-pink-500/20 transition-all">
+            <div className="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center text-lg flex-shrink-0">🎵</div>
+            <div className="min-w-0"><p className="font-bold text-white text-xs sm:text-sm truncate">TikTok Live</p><p className="text-[10px] sm:text-xs text-gray-400 truncate">@hallooboo</p></div>
           </a>
         </div>
       </section>
@@ -265,18 +262,17 @@ const OrderPage = () => {
   const [searchParams] = useSearchParams();
   const categoryId = parseInt(searchParams.get('category')) || 1;
   const [selectedCategory, setSelectedCategory] = useState(CONFIG.categories.find(c => c.id === categoryId) || CONFIG.categories[0]);
-  const [formData, setFormData] = useState({ usernameRoblox: '', usernameTiktok: '', totalSpin: 1 });
+  const [formData, setFormData] = useState({ usernameTiktok: '', usernameRoblox: '', totalSpin: 1 });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const totalPrice = selectedCategory.price * formData.totalSpin;
 
-  // Auto-scrolling untuk preview hadiah bergerak
   const scrollRef = useAutoScroll([selectedCategory.id]);
 
   const handleSubmit = async () => {
     const newErrors = {};
-    if (!formData.usernameRoblox.trim()) newErrors.usernameRoblox = 'Username Roblox wajib diisi';
     if (!formData.usernameTiktok.trim()) newErrors.usernameTiktok = 'Username TikTok wajib diisi';
+    if (!formData.usernameRoblox.trim()) newErrors.usernameRoblox = 'Username Roblox wajib diisi';
     if (formData.totalSpin < 1) newErrors.totalSpin = 'Minimal 1 spin';
     if (formData.totalSpin > 100) newErrors.totalSpin = 'Maksimal 100 spin';
     setErrors(newErrors);
@@ -347,7 +343,7 @@ const OrderPage = () => {
                 ))}
               </div>
               
-              {/* Daftar hadiah - kotak gambar + persentase */}
+              {/* Daftar hadiah */}
               <div className="space-y-2">
                 {selectedCategory.prizes.map((prize, i) => (
                   <PrizeCardFull key={`${selectedCategory.id}-${i}`} prize={prize} />
@@ -366,24 +362,11 @@ const OrderPage = () => {
             </div>
           </div>
           
-          {/* ISI DATA */}
+          {/* ISI DATA - TikTok DULU baru Roblox */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-4">
             <h3 className="text-sm font-bold text-white mb-4">ISI DATA LENGKAP</h3>
             <div className="space-y-4">
-              {/* Username Roblox */}
-              <div>
-                <label className="block text-xs font-medium text-gray-300 mb-1.5">Username Roblox <span className="text-red-400">*</span></label>
-                <input 
-                  type="text" 
-                  value={formData.usernameRoblox} 
-                  onChange={(e) => setFormData({ ...formData, usernameRoblox: e.target.value })} 
-                  placeholder="Masukkan username Roblox" 
-                  className={`w-full px-3 py-2.5 bg-white/5 border ${errors.usernameRoblox ? 'border-red-500' : 'border-white/20'} rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} 
-                />
-                {errors.usernameRoblox && <p className="text-red-400 text-[10px] mt-1">{errors.usernameRoblox}</p>}
-              </div>
-
-              {/* Username TikTok */}
+              {/* Username TikTok (PERTAMA) */}
               <div>
                 <label className="block text-xs font-medium text-gray-300 mb-1.5">Username TikTok <span className="text-red-400">*</span></label>
                 <input 
@@ -394,6 +377,19 @@ const OrderPage = () => {
                   className={`w-full px-3 py-2.5 bg-white/5 border ${errors.usernameTiktok ? 'border-red-500' : 'border-white/20'} rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} 
                 />
                 {errors.usernameTiktok && <p className="text-red-400 text-[10px] mt-1">{errors.usernameTiktok}</p>}
+              </div>
+
+              {/* Username Roblox (KEDUA) */}
+              <div>
+                <label className="block text-xs font-medium text-gray-300 mb-1.5">Username Roblox <span className="text-red-400">*</span></label>
+                <input 
+                  type="text" 
+                  value={formData.usernameRoblox} 
+                  onChange={(e) => setFormData({ ...formData, usernameRoblox: e.target.value })} 
+                  placeholder="Masukkan username Roblox" 
+                  className={`w-full px-3 py-2.5 bg-white/5 border ${errors.usernameRoblox ? 'border-red-500' : 'border-white/20'} rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors`} 
+                />
+                {errors.usernameRoblox && <p className="text-red-400 text-[10px] mt-1">{errors.usernameRoblox}</p>}
               </div>
 
               {/* Total Spin */}
@@ -569,18 +565,6 @@ const PaymentPage = () => {
                     <a href={orderData.qris_url} download={`QRIS-${orderData.order_id}.png`} className="flex-1 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white text-center text-xs font-medium hover:bg-white/20 transition-all">📥 Download QR</a>
                     <button onClick={() => { navigator.clipboard.writeText(orderData.qris_url); alert('URL QRIS berhasil dicopy!'); }} className="flex-1 py-2.5 bg-purple-500/20 border border-purple-500/50 rounded-lg text-purple-300 text-center text-xs font-medium hover:bg-purple-500/30 transition-all">📋 Copy URL</button>
                   </div>
-                  <div className="bg-slate-800/50 border border-white/10 rounded-lg p-2.5">
-                    <p className="text-[10px] text-gray-400 mb-1.5">🔗 QRIS Image URL:</p>
-                    <div className="flex items-center gap-1.5">
-                      <input type="text" value={orderData.qris_url} readOnly className="flex-1 bg-black/30 border border-white/10 rounded px-2 py-1.5 text-[10px] text-gray-300 font-mono truncate" onClick={(e) => e.target.select()} />
-                      <button onClick={() => { navigator.clipboard.writeText(orderData.qris_url); alert('URL berhasil dicopy!'); }} className="px-2 py-1.5 bg-green-500/20 border border-green-500/50 rounded text-green-400 text-[10px] hover:bg-green-500/30 transition-all whitespace-nowrap">Copy</button>
-                    </div>
-                    <p className="text-[10px] text-gray-500 mt-1.5">
-                      💡 Paste ke{' '}
-                      <a href="https://simulator.sandbox.midtrans.com/qris/index" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Midtrans Simulator</a>
-                      {' '}untuk test
-                    </p>
-                  </div>
                 </div>
               )}
             </div>
@@ -595,13 +579,28 @@ const PaymentPage = () => {
               <h2 className="text-xl font-bold text-green-400 mb-2">Pembayaran Berhasil!</h2>
               <p className="text-sm text-gray-400 mb-4">Admin akan segera menjalankan spin untuk Anda.</p>
               <div className="bg-white/5 rounded-lg p-3 text-left space-y-1.5 text-xs">
-                <p className="text-gray-400">Username Roblox: <span className="text-white font-bold">{orderData.order?.usn_roblox}</span></p>
                 <p className="text-gray-400">Username TikTok: <span className="text-white font-bold">{orderData.order?.usn_tiktok}</span></p>
+                <p className="text-gray-400">Username Roblox: <span className="text-white font-bold">{orderData.order?.usn_roblox}</span></p>
                 <p className="text-gray-400">Total Spin: <span className="text-white font-bold">{orderData.order?.total_spin}x</span></p>
                 <p className="text-gray-400">Kategori: <span className="text-white font-bold">{orderData.order?.kategori}</span></p>
               </div>
               <div className="mt-3 p-2.5 bg-green-500/10 border border-green-500/30 rounded-lg">
                 <p className="text-green-400 text-xs">✅ Data sudah masuk ke sistem admin. Silakan tunggu giliran spin!</p>
+              </div>
+
+              {/* 🐟 LINK PRIVATE SERVER FISCH */}
+              <div className="mt-4 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
+                <div className="text-2xl mb-2">🐟</div>
+                <p className="text-cyan-400 font-bold text-sm mb-1">Join Private Server Fisch!</p>
+                <p className="text-gray-400 text-xs mb-3">Masuk ke private server untuk mancing bareng dan klaim hadiah kamu</p>
+                <a 
+                  href={CONFIG.links.privateServer} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-block w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg font-bold text-white text-sm hover:scale-[1.02] transition-all hover:shadow-lg hover:shadow-cyan-500/25 active:scale-[0.98]"
+                >
+                  🎮 Masuk Private Server
+                </a>
               </div>
             </div>
           )}
